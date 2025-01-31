@@ -97,13 +97,7 @@ router.post('/iniciar_sesion', async (req, res) => {
 
       // Respuesta exitosa incluyendo el rol del usuario
       res.status(200).json({
-          message: 'Inicio de sesión exitoso',
-          usuario: {
-              id: usuario._id,
-              numero: usuario.numero,
-              rol: usuario.rol,
-              departamento: usuario.departamento // Incluye el rol en la respuesta
-          },
+          message: 'Inicio de sesión exitoso', usuario
       });
   } catch (error) {
       console.error('Error al iniciar sesión:', error);
