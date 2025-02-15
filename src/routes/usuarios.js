@@ -2,22 +2,41 @@ const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuarios');
 const { v4: uuidv4 } = require('uuid');
-
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 router.post('/iniciar_sesion', async (req, res) => {
   try {
-      const { numero } = req.body;
+    const { numero, password } = req.body;
+      
 
       if (!numero) {
           return res.status(400).json({ message: 'El número de teléfono es obligatorio' });
       }
 
       // Buscar al usuario por su número
-      const usuario = await Usuario.findOne({ numero });
+      const usuario = await Usuario.findOne({ numero: numero });
+
+      console.log(usuario);
 
       if (!usuario) {
           return res.status(404).json({ message: 'El número de teléfono no está registrado' });
-      }
+        }
+
+        // Verificar la contraseña
+        const isMatch = await bcrypt.compare(password, user.password); // Comparar contraseñas
+    
+        if (!isMatch) {
+          return res.status(400).json({ message: 'Contraseña incorrecta' });
+        }
+
+        const token = jwt.sign(
+            { userId: user._id, role: user.rol }, // Puedes agregar más datos si lo necesitas
+            'mi_clave_secreta', // Usa una clave secreta más segura en producción
+            { expiresIn: '1h' } // El token expira en 1 hora
+          );
+
+          res.json({ token, usuario: { numero: user.numero, rol: user.rol } });
 
       // Respuesta exitosa incluyendo el rol del usuario
       res.status(200).json({
