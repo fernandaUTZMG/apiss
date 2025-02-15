@@ -3,7 +3,7 @@ const router = express.Router();
 const Usuario = require('../models/Usuarios');
 const { v4: uuidv4 } = require('uuid');
 
-
+const jwt = require('jsonwebtoken'); // Asegúrate de tener instalado jsonwebtoken
 const secretKey = 'token';
 const token = jwt.sign({ id_usuario: usuario.id_usuario, rol: usuario.rol }, secretKey, { expiresIn: '1h' });
 
