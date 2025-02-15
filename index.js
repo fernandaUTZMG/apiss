@@ -19,7 +19,7 @@ app.use(express.json());
 app.use("/api/multas", multas);
 app.use("/api/usuarios", usuarios);
 app.use("/api/notificaciones", notis);
-app.use("/api", rutasProtegidas)
+app.use("/api/protegidas", rutasProtegidas)
 
 
 
