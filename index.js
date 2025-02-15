@@ -5,7 +5,7 @@ const connectDB = require("./Db");
 const multas = require("./src/routes/multas");
 const usuarios = require("./src/routes/usuarios");
 const notis = require("./src/routes/notificaciones");
-const rutasProtegidas = require('./routes/protegidas');
+const rutasProtegidas = require("./src/routes/protegidas");
 const app = express();
 
 // Conectar a MongoDB
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use("/api/multas", multas);
 app.use("/api/usuarios", usuarios);
 app.use("/api/notificaciones", notis);
-app.use('/api', rutasProtegidas)
+app.use("/api", rutasProtegidas)
 
 
 
