@@ -2,45 +2,31 @@ const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuarios');
 const { v4: uuidv4 } = require('uuid');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+
+const jwt = require('jsonwebtoken'); // Asegúrate de tener instalado jsonwebtoken
+const secretKey = 'token';
+const token = jwt.sign({ id_usuario: usuario.id_usuario, rol: usuario.rol }, secretKey, { expiresIn: '1h' });
 
 router.post('/iniciar_sesion', async (req, res) => {
   try {
-    const { numero, password } = req.body;
-      
+      const { numero } = req.body;
 
       if (!numero) {
           return res.status(400).json({ message: 'El número de teléfono es obligatorio' });
       }
 
       // Buscar al usuario por su número
-      const usuario = await Usuario.findOne({ numero: numero });
-
-      console.log(usuario);
+      const usuario = await Usuario.findOne({ numero });
 
       if (!usuario) {
           return res.status(404).json({ message: 'El número de teléfono no está registrado' });
-        }
-
-        // Verificar la contraseña
-        const isMatch = await bcrypt.compare(password, user.password); // Comparar contraseñas
-    
-        if (!isMatch) {
-          return res.status(400).json({ message: 'Contraseña incorrecta' });
-        }
-
-        const token = jwt.sign(
-            { userId: user._id, role: user.rol }, // Puedes agregar más datos si lo necesitas
-            'mi_clave_secreta', // Usa una clave secreta más segura en producción
-            { expiresIn: '1h' } // El token expira en 1 hora
-          );
-
-          res.json({ token, usuario: { numero: user.numero, rol: user.rol } });
+      }
 
       // Respuesta exitosa incluyendo el rol del usuario
       res.status(200).json({
-          message: 'Inicio de sesión exitoso', usuario
+          message: 'Inicio de sesión exitoso', usuario,
+          usuario,
+          token
       });
   } catch (error) {
       console.error('Error al iniciar sesión:', error);
