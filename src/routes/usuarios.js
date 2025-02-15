@@ -24,15 +24,9 @@ router.post('/iniciar_sesion', async (req, res) => {
     const token = jwt.sign({ id_usuario: usuario.id_usuario, rol: usuario.rol }, secretKey, { expiresIn: '1h' });
 
     // Respuesta exitosa incluyendo el rol del usuario y el token
-    res.status(200).json({
-      message: 'Inicio de sesión exitoso', 
-      usuario,
-      token
-    });
-
+    res.status(200).json({ token });
   } catch (error) {
-    console.error('Error al iniciar sesión:', error);
-    res.status(500).json({ message: 'Error al iniciar sesión' });
+    res.status(500).json({ message: 'Error en el servidor', error });
   }
 });
 
