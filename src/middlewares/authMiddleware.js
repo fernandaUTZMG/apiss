@@ -1,22 +1,22 @@
-const jwt = require('jsonwebtoken'); // Asegúrate de tener instalado jsonwebtoken
+const jwt = require('jsonwebtoken');
 
-// Middleware para verificar el token JWT
-module.exports = (req, res, next) => {
-    // Obtén el token del encabezado 'Authorization' (generalmente como Bearer token)
-    const token = req.header('Authorization')?.replace('Bearer ', ''); // Extrae el token si está presente
-
+const verifyToken = (req, res, next) => {
+    const token = req.header('Authorization')?.split(' ')[1]; // Extraer el token de "Bearer TOKEN"
+    
     if (!token) {
-        return res.status(401).json({ message: 'Acceso denegado. No se proporcionó un token.' });
+        return res.status(403).json({ error: 'Acceso denegado. Token no proporcionado.' });
     }
 
     try {
-        // Verifica el token con la clave secreta
-        const decoded = jwt.verify(token, 'token'); // 'token' es tu clave secreta
-        // Si la verificación es exitosa, agregamos los datos decodificados al objeto req
-        req.usuario = decoded;
-        next(); // Llama al siguiente middleware o controlador
-    } catch (error) {
-        return res.status(400).json({ message: 'Token no válido o expirado.' });
+        const verified = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = verified; // Guardar el usuario decodificado en la solicitud
+        next(); // Pasar al siguiente middleware
+    } catch (err) {
+        if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({ error: 'Token expirado' });
+        }
+        res.status(401).json({ error: 'Token inválido' });
     }
 };
 
+module.exports = verifyToken;
