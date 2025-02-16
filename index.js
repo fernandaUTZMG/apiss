@@ -22,7 +22,7 @@ app.use("/api/notificaciones", notis);
 app.use("/api/protegidas", rutasProtegidas);
 
 // Iniciar el servidor
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
