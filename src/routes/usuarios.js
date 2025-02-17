@@ -13,18 +13,33 @@ router.post('/iniciar_sesion', async (req, res) => {
       return res.status(400).json({ message: 'El número de teléfono es obligatorio' });
     }
 
-    if (usuario.password !== password) {
-      return res.status(401).json({ error: "Contraseña incorrecta" });
-    }
     // Buscar al usuario por su número
     const usuario = await Usuario.findOne({ numero });
 
     if (!usuario) {
       return res.status(404).json({ message: 'El número de teléfono no está registrado' });
     }
+    if (usuario.password !== password) {
+      return res.status(401).json({ error: "Contraseña incorrecta" });
+    }
+    res.status(200).json({
+      message: "Inicio de sesión exitoso",
+      usuario: {
+        id_usuario: usuario.id_usuario,
+        numero: usuario.numero,
+        rol: usuario.rol,
+        tipo_departamento: usuario.tipo_departamento,
+        id_departamento: usuario.id_departamento
+      },
+      token
+    });
 
     // Generar el token después de encontrar al usuario
-    const token = jwt.sign({ id_usuario: usuario.id_usuario, rol: usuario.rol }, secretKey, { expiresIn: '1h' });
+     const token = jwt.sign(
+      { id_usuario: usuario.id_usuario, rol: usuario.rol },
+      secretKey,
+      { expiresIn: '1h' }
+    );
 
     // Respuesta exitosa incluyendo el rol del usuario y el token
     res.status(200).json({ token });
