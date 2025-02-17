@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 
 const jwt = require('jsonwebtoken'); // Asegúrate de tener instalado jsonwebtoken
 const secretKey = 'token';
+
 router.post('/iniciar_sesion', async (req, res) => {
   try {
     const { numero, password } = req.body;
