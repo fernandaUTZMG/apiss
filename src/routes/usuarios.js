@@ -7,12 +7,15 @@ const jwt = require('jsonwebtoken'); // Asegúrate de tener instalado jsonwebtok
 const secretKey = 'token';
 router.post('/iniciar_sesion', async (req, res) => {
   try {
-    const { numero } = req.body;
+    const { numero, password } = req.body;
 
     if (!numero) {
       return res.status(400).json({ message: 'El número de teléfono es obligatorio' });
     }
 
+    if (usuario.password !== password) {
+      return res.status(401).json({ error: "Contraseña incorrecta" });
+    }
     // Buscar al usuario por su número
     const usuario = await Usuario.findOne({ numero });
 
@@ -68,3 +71,4 @@ router.post('/registro', async (req, res) => {
 });
 
 module.exports = router;
+
