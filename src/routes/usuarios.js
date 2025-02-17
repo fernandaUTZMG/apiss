@@ -19,9 +19,19 @@ router.post('/iniciar_sesion', async (req, res) => {
     if (!usuario) {
       return res.status(404).json({ message: 'El número de teléfono no está registrado' });
     }
+
     if (usuario.password !== password) {
       return res.status(401).json({ error: "Contraseña incorrecta" });
     }
+
+    // Generar el token después de encontrar al usuario
+    const token = jwt.sign(
+      { id_usuario: usuario.id_usuario, rol: usuario.rol },
+      secretKey,
+      { expiresIn: '1h' }
+    );
+
+    // Respuesta exitosa incluyendo los datos del usuario y el token
     res.status(200).json({
       message: "Inicio de sesión exitoso",
       usuario: {
@@ -34,15 +44,6 @@ router.post('/iniciar_sesion', async (req, res) => {
       token
     });
 
-    // Generar el token después de encontrar al usuario
-     const token = jwt.sign(
-      { id_usuario: usuario.id_usuario, rol: usuario.rol },
-      secretKey,
-      { expiresIn: '1h' }
-    );
-
-    // Respuesta exitosa incluyendo el rol del usuario y el token
-    res.status(200).json({ token });
   } catch (error) {
     res.status(500).json({ message: 'Error en el servidor', error });
   }
