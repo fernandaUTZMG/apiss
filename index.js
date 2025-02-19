@@ -6,6 +6,8 @@ const multas = require("./src/routes/multas");
 const usuarios = require("./src/routes/usuarios");
 const notis = require("./src/routes/notificaciones");
 const rutasProtegidas = require("./src/routes/protegidas");
+const verifyToken = require("../middlewares/authMiddleware");   
+
 const app = express();
 
 // Conectar a MongoDB
@@ -16,9 +18,9 @@ app.use(cors());
 app.use(express.json());
 
 // Rutas
-app.use("/api/multas", multas);
-app.use("/api", usuarios);
-app.use("/api", notis);
+app.use("/api", multas);
+app.use("/iniciarS", usuarios);
+app.use("/api",verifyToken, notis);
 app.use("/api/protegidas", rutasProtegidas);
 
 // Iniciar el servidor

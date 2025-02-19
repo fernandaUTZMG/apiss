@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
     const token = req.header('Authorization')?.split(' ')[1]; // Extraer el token de "Bearer TOKEN"
-    
+    console.log("🔒 Token recibido:", token);
     if (!token) {
         return res.status(403).json({ error: 'Acceso denegado. Token no proporcionado.' });
     }

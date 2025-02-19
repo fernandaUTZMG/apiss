@@ -3,10 +3,11 @@ const router = express.Router();
 const Usuario = require('../models/Usuarios');
 const { v4: uuidv4 } = require('uuid');
 
+
 const jwt = require('jsonwebtoken'); // Asegúrate de tener instalado jsonwebtoken
 const secretKey = 'token';
 
-router.post('/iniciar_sesion', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { numero} = req.body;
 
@@ -23,24 +24,22 @@ router.post('/iniciar_sesion', async (req, res) => {
 
     // Generar el token después de encontrar al usuario
     const token = jwt.sign(
-      { id_usuario: usuario.id_usuario, rol: usuario.rol },
-      secretKey,
+      { id_usuario: usuario.id_usuario,
+        numero: usuario.numero,
+        rol: usuario.rol,
+        tipo_departamento: usuario.tipo_departamento,
+        id_departamento: usuario.id_departamento },
+      process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
     // Respuesta exitosa incluyendo los datos del usuario y el token
     res.status(200).json({
       message: "Inicio de sesión exitoso",
-      usuario: {
-        id_usuario: usuario.id_usuario,
-        numero: usuario.numero,
-        rol: usuario.rol,
-        tipo_departamento: usuario.tipo_departamento,
-        id_departamento: usuario.id_departamento
-      },
-      token
+      token,
+      usuario
     });
-
+    console.log(token);
   } catch (error) {
     res.status(500).json({ message: 'Error en el servidor', error });
   }
