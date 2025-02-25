@@ -2,12 +2,14 @@ const express = require('express');
 const router = express.Router();
 const Usuario = require('../models/Usuarios');
 const { v4: uuidv4 } = require('uuid');
+//const verifyToken = require("./src/middlewares/authMiddleware"); 
 
 
 const jwt = require('jsonwebtoken'); // Asegúrate de tener instalado jsonwebtoken
 const secretKey = 'token';
 
 router.post('/', async (req, res) => {
+  console.log("1");
   try {
     const { numero} = req.body;
 
@@ -15,6 +17,7 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ message: 'El número de teléfono es obligatorio' });
     }
 
+    console.log("2");
     // Buscar al usuario por su número
     const usuario = await Usuario.findOne({ numero });
 
@@ -22,6 +25,7 @@ router.post('/', async (req, res) => {
       return res.status(404).json({ message: 'El número de teléfono no está registrado' });
     }
 
+    console.log("3");
     // Generar el token después de encontrar al usuario
     const token = jwt.sign(
       { id_usuario: usuario.id_usuario,
@@ -33,6 +37,7 @@ router.post('/', async (req, res) => {
       { expiresIn: '1h' }
     );
 
+    console.log("4");
     // Respuesta exitosa incluyendo los datos del usuario y el token
     res.status(200).json({
       message: "Inicio de sesión exitoso",
@@ -49,6 +54,10 @@ router.post('/', async (req, res) => {
 
 
 router.post('/registro', async (req, res) => {
+    /* const token=req.get("Authorization");
+    if(verifyToken(token)){
+
+    } */
     try {
         const { numero, rol, tipo_departamento, id_departamento } = req.body;
 
