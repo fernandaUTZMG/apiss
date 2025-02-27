@@ -12,18 +12,26 @@ const UsuarioSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    pass: {
+        type: String,
+        required: true,
+    },
     rol: {
         type: String,
         required: true,
     },
-    tipo_departamento: {
+    departamento: {
         type: String,
-        required: true,
+        required: false,
     },
     id_departamento: {
         type: String,
         required: true,
     },
+    token: { 
+        type: String, 
+        default: null 
+    }
 }, { collection: 'usuarios' });
 
 module.exports = mongoose.model('usuarios', UsuarioSchema);
