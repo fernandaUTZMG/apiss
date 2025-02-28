@@ -103,5 +103,35 @@ router.post('/registro', async (req, res) =>  {
   }
 });
 
+// router.post('/newcontra', async (req, res) => {
+//   console.log("Ruta de cambio de contraseña alcanzada");
+//   try {
+//       const { numero, newPassword } = req.body;
+
+//       // Validar que los campos estén presentes
+//       if (!numero || !newPassword) {
+//           return res.status(400).json({ message: 'Todos los campos son obligatorios' });
+//       }
+
+//       // Verificar si el usuario existe
+//       const usuario = await Usuario.findOne({ numero });
+//       if (!usuario) {
+//           return res.status(404).json({ message: 'Usuario no encontrado' });
+//       }
+
+//       // Hashear la nueva contraseña
+//       const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+//       // Actualizar la contraseña del usuario
+//       usuario.pass = hashedPassword;
+//       await usuario.save();
+
+//       res.status(200).json({ message: 'Contraseña cambiada exitosamente' });
+//   } catch (error) {
+//       console.error('Error al cambiar la contraseña:', error);
+//       res.status(500).json({ message: 'Error al cambiar la contraseña' });
+//   }
+// });
+
 module.exports = router;
 

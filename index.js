@@ -6,6 +6,7 @@
   const usuarios = require("./src/routes/usuarios");
   const notis = require("./src/routes/notificaciones");
   const rutasProtegidas = require("./src/routes/protegidas");
+  const newcontra = require("./src/routes/newcontra");
   //const verifyToken = require("./src/middlewares/authMiddleware");   
 
   const app = express();
@@ -23,6 +24,8 @@
   app.use("/api", usuarios);
   //app.use("/api",verifyToken, notis);
   app.use("/api/protegidas", rutasProtegidas);
+  app.use("/api", newcontra);
+
 
   // Iniciar el servidor
   const PORT = process.env.PORT || 4001;
